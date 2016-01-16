@@ -21,29 +21,29 @@ document.addEventListener('keydown', function (event) {
         40: 'down'
     };
 
-    let movement = {
+    let distanceToMove = {
         x: 0,
         y: 0
     };
 
-    switch (keyCodes[pressedKey]) {
-        case 'left':
-            movement.x = -1;
-            break;
-        case 'right':
-            movement.x = 1;
-            break;
-        case 'up':
-            movement.y = -1;
-            break;
-        case 'down':
-            movement.y = 1;
-            break;
+    movements = {
+        x: {
+            'left': -1,
+            'right': 1
+        },
+        y: {
+            'up': -1,
+            'down': 1
+        }
     };
+
+    const currentKey = keyCodes[pressedKey];
+    distanceToMove.x = movements.x[currentKey];
+    distanceToMove.y = movements.y[currentKey];
 
     clearInterval(interval);
     interval = setInterval(function () {
-        ourRectangleTest.move(movement);
+        ourRectangleTest.move(distanceToMove);
     }, 1);
 });
 document.addEventListener('keyup', function () {
