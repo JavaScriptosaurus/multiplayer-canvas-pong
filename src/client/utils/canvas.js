@@ -5,9 +5,7 @@
 
 class Shape {
 
-    constructor (width, height, x, y, color) {
-        this.width = width;
-        this.height = height;
+    constructor (x, y, color) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -20,10 +18,14 @@ class Shape {
     draw () {
         if (this.ctx) {
             this.ctx.beginPath();
-            this.ctx.rect(this.x, this.y, this.width, this.height);
+            this._drawPath();
             this.ctx.fillStyle = this.color;
             this.ctx.fill();
         }
+    }
+
+    _drawPath () {
+        // Shape specific.
     }
 
     move (dimensions) {
@@ -38,11 +40,37 @@ class Shape {
 }
 
 class Rectangle extends Shape {
-    // TODO
+
+    constructor (width, height, ...args) {
+        super(...args);
+        this.width = width;
+        this.height = height;
+        this._calculateCoordinates();
+    }
+
+    // Allows us to set centrepoint as position, canvas rectangles are top-left.
+    _calculateCoordinates () {
+        this.x -= this.width / 2;
+        this.y -= this.height / 2;
+    }
+
+    _drawPath () {
+        this.ctx.rect(this.x, this.y, this.width, this.height);
+    }
+
 }
 
 class Circle extends Shape {
-    // TODO
+
+    constructor (radius, ...args) {
+        super(...args);
+        this.radius = radius;
+    }
+
+    _drawPath () {
+        this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    }
+
 }
 
 function CanvasRenderer (canvas, dimensions) {
@@ -94,6 +122,10 @@ export default {
 
     createRectangle: function (width, height, x, y, color) {
         return new Rectangle(width, height, x, y, color);
+    },
+
+    createCircle: function (radius, x, y, color) {
+        return new Circle(radius, x, y, color);
     }
 
-}
+};

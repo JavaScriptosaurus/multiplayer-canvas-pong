@@ -38,7 +38,7 @@ gulp.task('es2015-client', function () {
         .transform(babelify)
         .bundle()
         .on('error', function(err) {
-            console.error(err); this.emit('end');
+            console.error(err.message); this.emit('end');
         })
         .pipe(source('build.js'))
         .pipe(buffer())
