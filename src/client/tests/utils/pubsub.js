@@ -37,6 +37,21 @@ describe('The PubSub util', function () {
 
     });
 
+    it ('should pass an argument into the callback', function (done) {
+
+        const pubsub = new PubSub();
+        const args = ['dog', 'cat'];
+
+        pubsub.subscribe('event', (callback, arg0, arg1) => {
+            expect(arg0).to.equal(args[0]);
+            expect(arg1).to.equal(args[1]);
+            callback();
+        });
+
+        pubsub.publish('event', done, ...args);
+
+    });
+
     it ('should allow an unsubscriptions', function () {
 
         const pubsub = new PubSub();
@@ -52,7 +67,7 @@ describe('The PubSub util', function () {
 
         pubsub.unsubscribe('event', callback1);
 
-        pubsub.publish('event');
+        var a = pubsub.publish('event');
 
         expect(count).to.equal(1);
 

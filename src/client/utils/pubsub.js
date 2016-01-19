@@ -26,26 +26,28 @@ export default function () {
 
         const callbacks = _events[event];
 
-        callbacks.forEach(registeredCallback => {
-            registeredCallback.apply(this, ...args);
+        callbacks.forEach(callback => {
+            callback(...args);
         });
 
         return this;
 
     };
 
-    const unsubscribe = function (event, callback) {
+    const unsubscribe = function (event, fn) {
 
         // If our event isn't in the events array, return false.
         if (!_events[event]) {
             return this;
         }
 
-        _events[event].forEach((registeredCallback, index, arr) => {
-            if (registeredCallback === callback) {
+        _events[event].forEach((callback, index, arr) => {
+            if (callback === fn) {
                 arr.splice(index, 1);
             }
         });
+
+        return this;
 
     };
 
