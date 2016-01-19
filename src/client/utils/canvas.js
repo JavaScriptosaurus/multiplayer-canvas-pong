@@ -25,7 +25,7 @@ class Shape {
     }
 
     _drawPath () {
-        // Shape specific.
+        // Shape specific, no-op.
     }
 
     move (dimensions) {

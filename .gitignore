@@ -2,6 +2,7 @@
 /node_modules/
 /public/js/
 /public/css/
+/pre-build/
 
 # Ignore these files:
 /server.js
