@@ -1,30 +1,47 @@
-export default function () {
+let _events = new WeakMap();
 
-    // Our events registry, with callbacks (sub-arrays) per event.
-    let _events = [];
+export default class PubSub {
 
-    const subscribe = function (event, callback) {
+    constructor () {
+        _events.set(this, []);
+    }
+
+    subscribe (event, callback) {
+
+        let events = _events.get(this);
 
         // If we don't have this event in our registry, add it.
-        if (!_events[event]) {
-            _events[event] = [];
+        if (!events[event]) {
+            events[event] = [];
         }
 
         // Register callback against the event.
-        _events[event].push(callback);
+        events[event].push(callback);
+        _events.set(this, events);
+
 
         return this;
 
-    };
+    }
 
-    const publish = function (event, ...args) {
+    subscribeSet (eventSet) {
+
+        Object.keys(eventSet).forEach(event => {
+            this.subscribe(event, eventSet[event]);
+        });
+
+        return this;
+
+    }
+
+    publish (event, ...args) {
 
         // If our event isn't in the events array, return false.
-        if (!_events[event]) {
+        if (!_events.get(this)[event]) {
             return this;
         }
 
-        const callbacks = _events[event];
+        const callbacks = _events.get(this)[event];
 
         callbacks.forEach(callback => {
             callback(...args);
@@ -32,16 +49,16 @@ export default function () {
 
         return this;
 
-    };
+    }
 
-    const unsubscribe = function (event, fn) {
+    unsubscribe (event, fn) {
 
         // If our event isn't in the events array, return false.
-        if (!_events[event]) {
+        if (!_events.get(this)[event]) {
             return this;
         }
 
-        _events[event].forEach((callback, index, arr) => {
+        _events.get(this)[event].forEach((callback, index, arr) => {
             if (callback === fn) {
                 arr.splice(index, 1);
             }
@@ -49,12 +66,6 @@ export default function () {
 
         return this;
 
-    };
-
-    return {
-        subscribe,
-        publish,
-        unsubscribe
-    };
+    }
 
 }

@@ -15,7 +15,7 @@ describe('The PubSub util', function () {
 
     });
 
-    it ('should allow an multiple subscriptions', function (done) {
+    it ('should allow an multiple subscriptions seperately', function (done) {
 
         const pubsub = new PubSub();
         const numSubscriptions = 2;
@@ -37,6 +37,32 @@ describe('The PubSub util', function () {
 
     });
 
+    it ('should allow an multiple subscriptions as a set', function (done) {
+
+        const pubsub = new PubSub();
+
+        const countingCallback = (() => {
+            let _count = 0;
+            return () => {
+                _count++;
+                if (_count === Object.keys(eventsObj).length) {
+                    done();
+                }
+            };
+        })();
+
+        const eventsObj = {
+            'event1': countingCallback,
+            'event2': countingCallback
+        };
+
+        pubsub.subscribeSet(eventsObj);
+
+        pubsub.publish('event1');
+        pubsub.publish('event2');
+
+    });
+
     it ('should pass an argument into the callback', function (done) {
 
         const pubsub = new PubSub();
@@ -55,7 +81,6 @@ describe('The PubSub util', function () {
     it ('should allow an unsubscriptions', function () {
 
         const pubsub = new PubSub();
-        const numSubscriptions = 2;
 
         let count = 0;
 
@@ -67,7 +92,7 @@ describe('The PubSub util', function () {
 
         pubsub.unsubscribe('event', callback1);
 
-        var a = pubsub.publish('event');
+        pubsub.publish('event');
 
         expect(count).to.equal(1);
 
