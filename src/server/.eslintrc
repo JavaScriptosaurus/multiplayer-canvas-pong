@@ -1,20 +1,8 @@
 {
+    "extends": "../../.eslintrc",
     "env": {
-        "node": true,
-        "es6": true
-    },
-    "ecmaFeatures": {
-        "modules": true
+        "node": true
     },
     "rules": {
-        "indent": 2,
-        "quotes": [
-            2,
-            "single"
-        ],
-        "semi": [
-            2,
-            "always"
-        ]
-    },
+    }
 }
