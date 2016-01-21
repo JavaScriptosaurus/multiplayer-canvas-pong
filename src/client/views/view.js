@@ -37,12 +37,12 @@ export default class View {
 
         canvasRenderer.addElements(player1.paddle, player2.paddle, ourCircleTest);
 
-        // setInterval(function () {
+        // setInterval(() => {
         //     ourOtherRectangleTest.move({ x: 0.2, y: -0.1 });
         // }, 10);
         //
         // let interval;
-        // document.addEventListener('keydown', function (event) {
+        // document.addEventListener('keydown', event => {
         //     const pressedKey = event.keyCode;
         //     const keyCodes = {
         //         37: 'left',
@@ -72,12 +72,12 @@ export default class View {
         //     distanceToMove.y = movements.y[currentKey];
         //
         //     clearInterval(interval);
-        //     interval = setInterval(function () {
+        //     interval = setInterval(() => {
         //         // TODO Calculate max movable distance with physics engine?
         //         ourRectangleTest.move(distanceToMove);
         //     }, 1);
         // });
-        // document.addEventListener('keyup', function () {
+        // document.addEventListener('keyup', () => {
         //     clearInterval(interval);
         // });
 

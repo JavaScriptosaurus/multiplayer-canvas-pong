@@ -8,26 +8,22 @@ export default class PubSub {
 
     subscribe (event, callback) {
 
-        let events = _events.get(this);
-
         // If we don't have this event in our registry, add it.
-        if (!events[event]) {
-            events[event] = [];
+        if (!_events.get(this)[event]) {
+            _events.get(this)[event] = [];
         }
 
         // Register callback against the event.
-        events[event].push(callback);
-        _events.set(this, events);
-
+        _events.get(this)[event].push(callback);
 
         return this;
 
     }
 
-    subscribeSet (eventSet) {
+    subscribeMultiple (eventsObj) {
 
-        Object.keys(eventSet).forEach(event => {
-            this.subscribe(event, eventSet[event]);
+        Object.keys(eventsObj).forEach(event => {
+            this.subscribe(event, eventsObj[event]);
         });
 
         return this;

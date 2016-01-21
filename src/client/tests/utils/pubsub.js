@@ -3,9 +3,9 @@ import PubSub from '../../utils/pubsub';
 
 const expect = chai.expect;
 
-describe('The PubSub util', function () {
+describe('The PubSub util', () => {
 
-    it ('should allow an event to be registered', function (done) {
+    it ('should allow an event to be registered', done => {
 
         const pubsub = new PubSub();
 
@@ -15,7 +15,7 @@ describe('The PubSub util', function () {
 
     });
 
-    it ('should allow an multiple subscriptions seperately', function (done) {
+    it ('should allow an multiple subscriptions seperately', done => {
 
         const pubsub = new PubSub();
         const numSubscriptions = 2;
@@ -37,7 +37,7 @@ describe('The PubSub util', function () {
 
     });
 
-    it ('should allow an multiple subscriptions as a set', function (done) {
+    it ('should allow an multiple subscriptions as a set', done => {
 
         const pubsub = new PubSub();
 
@@ -56,14 +56,14 @@ describe('The PubSub util', function () {
             'event2': countingCallback
         };
 
-        pubsub.subscribeSet(eventsObj);
+        pubsub.subscribeMultiple(eventsObj);
 
         pubsub.publish('event1');
         pubsub.publish('event2');
 
     });
 
-    it ('should pass an argument into the callback', function (done) {
+    it ('should pass an argument into the callback', done => {
 
         const pubsub = new PubSub();
         const args = ['dog', 'cat'];
@@ -78,7 +78,7 @@ describe('The PubSub util', function () {
 
     });
 
-    it ('should allow an unsubscriptions', function () {
+    it ('should allow an unsubscriptions', () => {
 
         const pubsub = new PubSub();
 

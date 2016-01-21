@@ -87,7 +87,7 @@ function CanvasRenderer (canvas, dimensions) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // For each element to render, call draw.
-        elementsToRender.forEach(function (element) {
+        elementsToRender.forEach(element => {
             if (element.draw instanceof Function) {
                 element.draw();
             }
@@ -103,9 +103,9 @@ function CanvasRenderer (canvas, dimensions) {
 
     return {
 
-        addElements: function (...elements) {
+        addElements: (...elements) => {
             // TODO: Check if element is in the list?
-            elements.forEach(function (element) {
+            elements.forEach(element => {
                 element.setContext(ctx);
                 elementsToRender.push(element);
             });
@@ -116,15 +116,15 @@ function CanvasRenderer (canvas, dimensions) {
 
 export default {
 
-    getRenderer: function (canvas, dimensions) {
+    getRenderer: (canvas, dimensions) => {
         return CanvasRenderer(canvas, dimensions);
     },
 
-    createRectangle: function (width, height, x, y, color) {
+    createRectangle: (width, height, x, y, color) => {
         return new Rectangle(width, height, x, y, color);
     },
 
-    createCircle: function (radius, x, y, color) {
+    createCircle: (radius, x, y, color) => {
         return new Circle(radius, x, y, color);
     }
 
