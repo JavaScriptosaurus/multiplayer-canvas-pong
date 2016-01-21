@@ -92,7 +92,7 @@ function CanvasRenderer (canvas, dimensions) {
                 element.draw();
             }
         });
-    };
+    }
 
     // Start rendering.
     const requestAnimationFrame = window.requestAnimationFrame;

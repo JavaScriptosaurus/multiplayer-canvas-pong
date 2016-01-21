@@ -7,8 +7,8 @@ export default class Controller {
 
     init () {
         this.view.events.subscribe('test', alertMessage => {
-            console.log(alertMessage);
-        })
+            console.log(alertMessage); //eslint-disable-line no-console
+        });
     }
 
 }

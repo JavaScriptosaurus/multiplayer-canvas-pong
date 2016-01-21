@@ -3,4 +3,4 @@
  * TODO: Description to come later.
  */
 
-let elementsToWatch = [];
+// let elementsToWatch = [];
