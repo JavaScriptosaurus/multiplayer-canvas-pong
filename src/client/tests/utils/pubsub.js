@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import PubSub from '../../utils/pubsub';
+import PubSub from '../../utils/pubSub';
 
 const expect = chai.expect;
 
@@ -7,17 +7,27 @@ describe('The PubSub util', () => {
 
     it ('should allow an event to be registered', done => {
 
-        const pubsub = new PubSub();
+        const eventSystem = new PubSub();
 
-        pubsub.subscribe('event', done);
+        eventSystem.addListener('event', done);
 
-        pubsub.publish('event');
+        eventSystem.trigger('event');
+
+    });
+
+    it ('should allow an \'any\' event to be registered', done => {
+
+        const eventSystem = new PubSub();
+
+        eventSystem.addListener('*', done);
+
+        eventSystem.trigger('event');
 
     });
 
     it ('should allow an multiple subscriptions seperately', done => {
 
-        const pubsub = new PubSub();
+        const eventSystem = new PubSub();
         const numSubscriptions = 2;
 
         const countingCallback = (() => {
@@ -30,16 +40,16 @@ describe('The PubSub util', () => {
             };
         })();
 
-        pubsub.subscribe('event', countingCallback);
-        pubsub.subscribe('event', countingCallback);
+        eventSystem.addListener('event', countingCallback);
+        eventSystem.addListener('event', countingCallback);
 
-        pubsub.publish('event');
+        eventSystem.trigger('event');
 
     });
 
     it ('should allow an multiple subscriptions as a set', done => {
 
-        const pubsub = new PubSub();
+        const eventSystem = new PubSub();
 
         const countingCallback = (() => {
             let _count = 0;
@@ -56,43 +66,43 @@ describe('The PubSub util', () => {
             'event2': countingCallback
         };
 
-        pubsub.subscribeMultiple(eventsObj);
+        eventSystem.addMultipleListeners(eventsObj);
 
-        pubsub.publish('event1');
-        pubsub.publish('event2');
+        eventSystem.trigger('event1');
+        eventSystem.trigger('event2');
 
     });
 
     it ('should pass an argument into the callback', done => {
 
-        const pubsub = new PubSub();
+        const eventSystem = new PubSub();
         const args = ['dog', 'cat'];
 
-        pubsub.subscribe('event', (callback, arg0, arg1) => {
+        eventSystem.addListener('event', (callback, arg0, arg1) => {
             expect(arg0).to.equal(args[0]);
             expect(arg1).to.equal(args[1]);
             callback();
         });
 
-        pubsub.publish('event', done, ...args);
+        eventSystem.trigger('event', done, ...args);
 
     });
 
     it ('should allow an unsubscriptions', () => {
 
-        const pubsub = new PubSub();
+        const eventSystem = new PubSub();
 
         let count = 0;
 
         const callback1 = () => { count++; };
         const callback2 = () => { count++; };
 
-        pubsub.subscribe('event', callback1);
-        pubsub.subscribe('event', callback2);
+        eventSystem.addListener('event', callback1);
+        eventSystem.addListener('event', callback2);
 
-        pubsub.unsubscribe('event', callback1);
+        eventSystem.removeListener('event', callback1);
 
-        pubsub.publish('event');
+        eventSystem.trigger('event');
 
         expect(count).to.equal(1);
 

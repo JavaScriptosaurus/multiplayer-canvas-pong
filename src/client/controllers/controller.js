@@ -1,14 +1,13 @@
-export default class Controller {
+import * as MVC from '../utils/mvc';
 
-    constructor (model, view) {
-        this.model = model;
-        this.view = view;
-    }
+class Controller extends MVC.Controller {
 
     init () {
-        this.view.events.subscribe('test', alertMessage => {
+        this.eventSystem.addListener('view:test', alertMessage => {
             console.log(alertMessage); //eslint-disable-line no-console
         });
     }
 
 }
+
+export default Controller;
