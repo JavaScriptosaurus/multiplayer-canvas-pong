@@ -6,7 +6,7 @@ export default class PubSub {
         _events.set(this, []);
     }
 
-    subscribe (event, callback) {
+    addListener (event, callback) {
 
         // If we don't have this event in our registry, add it.
         if (!_events.get(this)[event]) {
@@ -20,24 +20,31 @@ export default class PubSub {
 
     }
 
-    subscribeMultiple (eventsObj) {
+    addMultipleListeners (eventsObj) {
 
         Object.keys(eventsObj).forEach(event => {
-            this.subscribe(event, eventsObj[event]);
+            this.addListener(event, eventsObj[event]);
         });
 
         return this;
 
     }
 
-    publish (event, ...args) {
+    trigger (event, ...args) {
+
+        const events = _events.get(this);
 
         // If our event isn't in the events array, return false.
-        if (!_events.get(this)[event]) {
+        if (!events[event] && !events['*']) {
             return this;
         }
 
-        const callbacks = _events.get(this)[event];
+        let callbacks = events[event] || [];
+
+        // Allows subscription to an 'any' event.
+        if (events['*']) {
+            callbacks = callbacks.concat(events['*']);
+        }
 
         callbacks.forEach(callback => {
             callback(...args);
@@ -47,7 +54,7 @@ export default class PubSub {
 
     }
 
-    unsubscribe (event, fn) {
+    removeListener (event, fn) {
 
         // If our event isn't in the events array, return false.
         if (!_events.get(this)[event]) {

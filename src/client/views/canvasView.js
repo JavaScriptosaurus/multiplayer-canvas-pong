@@ -1,14 +1,10 @@
-import PubSub from '../utils/pubsub';
+import * as MVC from '../utils/mvc';
 import canvasManager from '../utils/canvas';
 
-export default class View {
-
-    constructor () {
-        this.events = new PubSub();
-        this.init();
-    }
+class CanvasView extends MVC.View {
 
     init () {
+
         class Player {
 
             constructor (name, color, side) {
@@ -32,7 +28,7 @@ export default class View {
         setInterval(() => {
             const coords = { x: 0.2, y: -0.1 };
             ourCircleTest.move(coords);
-            this.events.publish('test', { moving: coords });
+            this.eventSystem.trigger('view:test', { moving: coords });
         }, 10);
 
         canvasRenderer.addElements(player1.paddle, player2.paddle, ourCircleTest);
@@ -84,3 +80,5 @@ export default class View {
     }
 
 }
+
+export default CanvasView;

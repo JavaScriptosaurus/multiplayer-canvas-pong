@@ -6,9 +6,7 @@
 class Shape {
 
     constructor (x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
+        Object.assign(this, {x, y, color});
     }
 
     setContext (context) {
@@ -43,8 +41,7 @@ class Rectangle extends Shape {
 
     constructor (width, height, ...args) {
         super(...args);
-        this.width = width;
-        this.height = height;
+        Object.assign(this, {width, height});
         this._calculateCoordinates();
     }
 
@@ -76,8 +73,7 @@ class Circle extends Shape {
 function CanvasRenderer (canvas, dimensions) {
     // Set up canvas and dimensions.
     const ctx = canvas.getContext('2d');
-    canvas.width = dimensions.width;
-    canvas.height = dimensions.height;
+    Object.assign(canvas, dimensions);
 
     // Renderable elements
     let elementsToRender = [];
