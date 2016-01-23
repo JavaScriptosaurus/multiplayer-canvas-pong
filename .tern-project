@@ -2,5 +2,17 @@
   "ecmaVersion": 6,
   "libs": [
     "browser"
-  ]
+  ],
+  "loadEagerly": [
+    "src/**/*.js"
+  ],
+  "plugins": {
+    "node": {},
+    "complete_strings": {},
+    "doc_comment": {
+      "fullDocs": true
+    },
+    "modules": {},
+    "es_modules": {}
+  }
 }

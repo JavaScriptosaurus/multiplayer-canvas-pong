@@ -1,12 +1,9 @@
-/**
- * Canvas Manager
- * TODO: Description to come later.
- */
+/** @module utils/canvas */
 
 class Shape {
 
-    constructor (x, y, color) {
-        Object.assign(this, {x, y, color});
+    constructor (properties) {
+        Object.assign(this, properties);
     }
 
     setContext (context) {
@@ -26,43 +23,39 @@ class Shape {
         // Shape specific, no-op.
     }
 
-    move (dimensions) {
-        if (dimensions.x) {
-            this.x += dimensions.x;
-        }
-        if (dimensions.y) {
-            this.y += dimensions.y;
-        }
+    move (movement) {
+        Object.keys(movement).forEach(axis => {
+            this[axis] += movement[axis];
+        });
     }
 
 }
 
 class Rectangle extends Shape {
 
-    constructor (width, height, ...args) {
-        super(...args);
-        Object.assign(this, {width, height});
-        this._calculateCoordinates();
+    get x () {
+        return this._x + this.width / 2;
     }
 
-    // Allows us to set centrepoint as position, canvas rectangles are top-left.
-    _calculateCoordinates () {
-        this.x -= this.width / 2;
-        this.y -= this.height / 2;
+    set x (x) {
+        this._x = x - this.width / 2;
+    }
+
+    get y () {
+        return this._y + this.height / 2;
+    }
+
+    set y (y) {
+        this._y = y - this.height / 2;
     }
 
     _drawPath () {
-        this.ctx.rect(this.x, this.y, this.width, this.height);
+        this.ctx.rect(this._x, this._y, this.width, this.height);
     }
 
 }
 
 class Circle extends Shape {
-
-    constructor (radius, ...args) {
-        super(...args);
-        this.radius = radius;
-    }
 
     _drawPath () {
         this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
@@ -117,11 +110,11 @@ export default {
     },
 
     createRectangle: (width, height, x, y, color) => {
-        return new Rectangle(width, height, x, y, color);
+        return new Rectangle({width, height, x, y, color});
     },
 
     createCircle: (radius, x, y, color) => {
-        return new Circle(radius, x, y, color);
+        return new Circle({radius, x, y, color});
     }
 
 };

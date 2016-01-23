@@ -3,6 +3,7 @@
 /public/js/
 /public/css/
 /pre-build/
+/helpers/
 
 # Ignore these files:
 /server.js
