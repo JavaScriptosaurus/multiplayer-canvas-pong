@@ -1,11 +1,23 @@
-import * as MVC from '../utils/mvc';
+/** @module models/gameModel */
 
-class GameModel extends MVC.Model {
+import eventSystem from '../components/eventSystem';
 
-    init () {
-        //
+const GameModel = {
+    init: function () {
+        // FIXME: This is copying eventSystem, should inherit prototype.
+        Object.assign(this, eventSystem);
+        return this;
+    },
+
+    startGame: function (boardData) {
+        this.boardData = boardData;
+        this.trigger('game:start', boardData);
+    },
+
+    updateGame: function (boardData) {
+        this.boardData = boardData;
+        this.trigger('game:update', boardData);
     }
-
-}
+};
 
 export default GameModel;

@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import PubSub from '../../utils/pubSub';
+import EventSystem from '../../components/eventSystem';
 
 const expect = chai.expect;
 
@@ -7,9 +7,9 @@ describe('The PubSub util', () => {
 
     it ('should allow an event to be registered', done => {
 
-        const eventSystem = new PubSub();
+        const eventSystem = Object.create(EventSystem);
 
-        eventSystem.addListener('event', done);
+        eventSystem.on('event', done);
 
         eventSystem.trigger('event');
 
@@ -17,9 +17,9 @@ describe('The PubSub util', () => {
 
     it ('should allow an \'any\' event to be registered', done => {
 
-        const eventSystem = new PubSub();
+        const eventSystem = Object.create(EventSystem);
 
-        eventSystem.addListener('*', done);
+        eventSystem.on('*', done);
 
         eventSystem.trigger('event');
 
@@ -27,7 +27,7 @@ describe('The PubSub util', () => {
 
     it ('should allow an multiple subscriptions seperately', done => {
 
-        const eventSystem = new PubSub();
+        const eventSystem = Object.create(EventSystem);
         const numSubscriptions = 2;
 
         const countingCallback = (() => {
@@ -40,8 +40,8 @@ describe('The PubSub util', () => {
             };
         })();
 
-        eventSystem.addListener('event', countingCallback);
-        eventSystem.addListener('event', countingCallback);
+        eventSystem.on('event', countingCallback);
+        eventSystem.on('event', countingCallback);
 
         eventSystem.trigger('event');
 
@@ -49,7 +49,7 @@ describe('The PubSub util', () => {
 
     it ('should allow an multiple subscriptions as a set', done => {
 
-        const eventSystem = new PubSub();
+        const eventSystem = Object.create(EventSystem);
 
         const countingCallback = (() => {
             let _count = 0;
@@ -66,7 +66,7 @@ describe('The PubSub util', () => {
             'event2': countingCallback
         };
 
-        eventSystem.addMultipleListeners(eventsObj);
+        eventSystem.on(eventsObj);
 
         eventSystem.trigger('event1');
         eventSystem.trigger('event2');
@@ -75,10 +75,10 @@ describe('The PubSub util', () => {
 
     it ('should pass an argument into the callback', done => {
 
-        const eventSystem = new PubSub();
+        const eventSystem = Object.create(EventSystem);
         const args = ['dog', 'cat'];
 
-        eventSystem.addListener('event', (callback, arg0, arg1) => {
+        eventSystem.on('event', (callback, arg0, arg1) => {
             expect(arg0).to.equal(args[0]);
             expect(arg1).to.equal(args[1]);
             callback();
@@ -90,17 +90,17 @@ describe('The PubSub util', () => {
 
     it ('should allow an unsubscriptions', () => {
 
-        const eventSystem = new PubSub();
+        const eventSystem = Object.create(EventSystem);
 
         let count = 0;
 
         const callback1 = () => { count++; };
         const callback2 = () => { count++; };
 
-        eventSystem.addListener('event', callback1);
-        eventSystem.addListener('event', callback2);
+        eventSystem.on('event', callback1);
+        eventSystem.on('event', callback2);
 
-        eventSystem.removeListener('event', callback1);
+        eventSystem.off('event', callback1);
 
         eventSystem.trigger('event');
 
